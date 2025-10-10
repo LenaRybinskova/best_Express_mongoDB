@@ -10,7 +10,7 @@ const authService = new AuthService(authRepository)
 const authController = new AuthController(authService)
 
 authRouter
-    .get('/', authController.register)
+    .post('/', authController.register)
 /*.post('/login', authController.login)
 .post('/logout', authController.logout)
 .get('/me', authController.me)*/
