@@ -11,7 +11,9 @@
     "ssl:generate": "mkdir .ssl && openssl req -nodes -new -x509 -keyout .ssl/key.pem -out .ssl/cert.pem -subj \"/CN=localhost\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+
+    "test:db": "ts-node src/scripts/testConnection.ts"
   },
   "keywords": [],
   "author": "",

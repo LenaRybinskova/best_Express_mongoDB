@@ -22,55 +22,43 @@
 - avatar
 - experience
 - role
-- availableСourses
-- authorCourses
-- comments
+- availableCourses (References)
+- authorCourses (References)
+- comments (References)
 
 # Course:
 
 - id
-- authorId(userId)
+- authorId(userId) (References)
 - title
 - description
 - startedAt
 - endedAt
 - price
-- lessons
-- reviews
-- rating
-- studentsId (кто прошел курс)
+- lessonsId (References)
+- commentsId (References)
+- ratingStat (Embedded) [{id, rating}, {}, {}]
+- ratingResult ()
+- ratingCount
+- studentsId (кто прошел курс) (References)
 
 # Lesson:
 
 - id
-- authorId(userId)
-- courseId
+- authorId(userId) (References)
+- courseId (References)
 - title
 - description
 - startedAt
-- comments
-- resourcesId
-- studentsId (кто прошел ушел)
+- commentsId (References) 
+- resources (Embedded) {files,video, resourceLink }
+- studentsId (кто прошел уже) (References)
 
-# Resource:
 
-- id
-- lessonId
-- file
-- video
-- link
-
-# TextComment:
+# Comments:
 
 - id
-- authorId(userId)
-- lessonId
+- authorId(userId)  (References)
+- courseId (References)
 - dataPublish
-- message
-
-# RatingCourse:
-
-- id
-- authorId(userId)
-- courseId
-- raiting(1 - 5)
+- text
