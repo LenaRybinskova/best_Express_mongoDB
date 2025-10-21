@@ -12,7 +12,6 @@ const userController = new UsersController(userService);
 usersRouter
     .get('/', userController.getUsers)
     .get('/:id', userController.getUserById)
-    .post('/', userController.create)
-    .patch('/:id', userController.update)
+    .patch('/:id', userController.update) // c фр приходит только ид и поле, которое меняем
     .delete('/:id', userController.delete)
 

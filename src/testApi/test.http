@@ -1,0 +1,58 @@
+## USERS
+### 1. получить всех юзеров
+GET {{base_url}}/users
+
+
+### 2. получить юзера по ИД
+GET {{base_url}}/users/68ee534d3e878ac744cad251
+Content-Type: application/json
+
+### 3. изменить конкретные поля
+PATCH {{base_url}}/users/68ee534d3e878ac744cad251
+Content-Type: application/json
+
+{
+  "firstName": "Sasha444"
+}
+
+### 4. удалить юзера
+DELETE {{base_url}}/users/68ee534d3e878ac744cad251
+Content-Type: application/json
+
+
+
+
+## COURSES
+### 1. получить все курсы
+
+GET {{base_url}}/courses
+Content-Type: application/json
+
+
+### 3. Создать курс ( без данные по урокам, студентам, рейтингу, коммментариям)
+
+POST {{base_url}}/courses
+Content-Type: application/json
+
+{
+  "title": "курс22",
+  "description": "описание для Курс22",
+  "startedAt": "2025-10-25T00:00:00.000Z",
+  "endedAt": "2025-10-30T23:59:59.999Z",
+  "price": 100
+}
+
+### 4. Изменить точечно какие то поля в Курсе
+
+PATCH {{base_url}}/courses/68f633c309434d88500e0cb3
+Content-Type: application/json
+
+{
+  "title": "курс2UPDATE"
+}
+
+
+
+
+
+
