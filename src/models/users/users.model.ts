@@ -10,11 +10,12 @@ export const USER_ROLE = {
 export type UserRole = typeof USER_ROLE[keyof typeof USER_ROLE];
 
 export interface IUser extends Document {
-    firstName?: string;
-    lastName?: string;
     login: string;
     password: string;
     email: string;
+
+    firstName?: string;
+    lastName?: string;
     avatar?: string;
     experience?: number;
     role?: UserRole;
@@ -26,14 +27,14 @@ export interface IUser extends Document {
 }
 
 const userSchema = new Schema<IUser>({
-    firstName: { type: String, required: false },
-    lastName: { type: String, required: false },
     login: { type: String, required: true },
     password: { type: String, required: true },
     email: { type: String,lowercase: true, required: true, unique: true },
+
+    firstName: { type: String, required: false },
+    lastName: { type: String, required: false },
     avatar: { type: String, required: false },
     experience: { type: Number, required: false },
-
     role: { type: String, enum: Object.values(USER_ROLE), default: USER_ROLE.USER },
     availableCourses:[{type: Schema.Types.ObjectId, ref: 'Course'}],  //доступные курсы [id, id]
     authorCourses:[{type:Schema.Types.ObjectId, ref: 'Course'}],      //является автором курсов[id, id]

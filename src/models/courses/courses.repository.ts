@@ -7,7 +7,7 @@ import {USER_ROLE, UserModel} from '../users/users.model';
 
 export class CourseRepository {
 
-    // метод для проверки  -текущ юзер это автор курса или админ?
+    // метод для проверки: текущ юзер это автор курса или админ?
     async checkAccessCourse(courseId: string | Types.ObjectId, currentUserId: string | Types.ObjectId, accessLevel?: typeof USER_ROLE): Promise<ICourse> {
 
         const [course, user] = await Promise.all([
@@ -17,6 +17,8 @@ export class CourseRepository {
         const isUserAuthor = course.authorId.toString() === currentUserId.toString()
 
         const isAdmin = user?.role as string === 'admin';
+        console.log('isUserAuthor', isUserAuthor)
+        console.log('isAdmin', isAdmin)
 
         if (!isUserAuthor && !isAdmin) {
             throw new Error('FORBIDDEN');
@@ -49,16 +51,17 @@ export class CourseRepository {
 
     async create(courseData: ICourse) {
         try {
+            console.log('create:', courseData)
             return await CourseModel.create(courseData);
         } catch (error) {
             throw handleMongoError(error)
         }
     }
 
-    async update(currentUserId: Types.ObjectId, courseId: Types.ObjectId, courseData: UpdateCourseInput) {
+    async update(authUserId: string, courseId: string, courseData: UpdateCourseInput) {
         try {
             // проверка, админ или автор'?
-            await this.checkAccessCourse(courseId, currentUserId);
+            await this.checkAccessCourse(courseId, authUserId);
 
             return await CourseModel.findByIdAndUpdate(courseId, courseData,
                 {
@@ -72,10 +75,10 @@ export class CourseRepository {
         }
     }
 
-    async delete(courseId: string, currentUserId: string) {
+    async delete(authUserId: string, courseId: string) {
         try {
             // проверка, админ или автор'?
-            await this.checkAccessCourse(courseId, currentUserId);
+            await this.checkAccessCourse(courseId, authUserId);
 
             const result = await CourseModel.findByIdAndDelete(courseId);
             if (!result || null) {

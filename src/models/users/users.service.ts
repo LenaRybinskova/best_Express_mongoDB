@@ -1,5 +1,5 @@
 import {UserRepository} from './users.repository';
-import {UpdateUser} from '../users/user.types';
+import {UpdateCourseInput} from '../users/user.types';
 
 
 export class UsersService {
@@ -21,9 +21,9 @@ export class UsersService {
         return user;
     }
 
-    async update(id: string, payload: UpdateUser) {
+    async update(authUserId: string, id: string, payload: UpdateCourseInput) {
 
-        const updatedUser = await this.userRepository.update(id, payload)
+        const updatedUser = await this.userRepository.update(authUserId, id, payload)
 
         if (!updatedUser || null) {
             throw new Error('NOT_FOUND');
@@ -32,11 +32,12 @@ export class UsersService {
         return updatedUser
     }
 
-    async delete(id: string) {
-        const deletedUser = await  this.userRepository.delete(id)
-
+    async delete(authUserId: string, id: string) {
+        const deletedUser = await this.userRepository.delete(authUserId, id)
         if (!deletedUser) {
             throw new Error('NOT_FOUND');
         }
+
+        return deletedUser
     }
 }

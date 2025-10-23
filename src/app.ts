@@ -2,7 +2,7 @@ import express from 'express';
 import {usersRouter} from './models/users/users.router';
 import {coursesRouter} from './models/courses/courses.router';
 import {authRouter} from './models/auth/auth.router';
-import {errorHandler} from '../src/utils/errorMiddleware';
+import {errorMiddleware} from '../src/utils/errorMiddleware';
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.get('/', () => {
     console.log('Home')
 })
 
-app.use(errorHandler)
+app.use(errorMiddleware)
 export default app;
 
 

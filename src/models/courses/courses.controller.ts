@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {CoursesService} from './courses.service';
 import {ResponseHandle} from '../../utils/responseHandle';
-import {CreateCourseSchema, UpdateCourseInput} from '../courses/courses.types';
+import {UpdateCourseInput} from '../courses/courses.types';
 import {ICourse} from '../courses/courses.model';
 import {Types} from 'mongoose';
 
@@ -23,8 +23,10 @@ export class CoursesController {
     }
 
     create = async (req: Request, res: Response) => {
-        const authorId = '68ee534d3e878ac744cad251' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА из заголовка, когда авториз будет готова
-        const validationZod = CreateCourseSchema.safeParse(req.body);
+        const authUserId = '68f8cf6907cf39953f582141' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА из заголовка, когда авториз будет готова
+
+        //вынесено в мидлвар
+        /*const validationZod = CreateCourseSchema.safeParse(req.body);
 
         //вывод валидац ошибки из zod
         if (!validationZod.success) {
@@ -37,11 +39,11 @@ export class CoursesController {
             };
 
             return res.status(400).json(ResponseHandle.error('VALIDATION_ERROR', 400, errorDetails));
-            /*throw new Error("VALIDATION_ERROR")*/
-        }
+            /!*throw new Error("VALIDATION_ERROR")*!/
+        }*/
 
         const newCourse: ICourse = {
-            authorId,
+            authorId: authUserId,
             ...req.body
         }
 
@@ -49,28 +51,22 @@ export class CoursesController {
         res.status(201).json(ResponseHandle.success(result))
     }
 
-
     update = async (req: Request, res: Response) => {
 
-        //68ee534d3e878ac744cad251
-        const currentUserId = '68ee534d3e878ac744cad251' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
-        const courseId = req.params.id;
+        const authUserId = '68f8cf6907cf39953f582141' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
 
-        //преобраз ИД
-        const objectCurrentUserId = new Types.ObjectId(currentUserId);
-        const objectCourseId = new Types.ObjectId(courseId);
+        const courseId = req.params.id;
 
         const body: UpdateCourseInput = req.body;
 
-        const result = await this.coursesService.update(objectCurrentUserId, objectCourseId, body)
+        const result = await this.coursesService.update(authUserId, courseId, body)
         res.status(200).json(ResponseHandle.success(result))
     }
 
-
     delete = async (req: Request, res: Response) => {
-        const currentUserId = '68ee534d3e878ac744cad251' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
+        const authUserId = '68f8cf6907cf39953f582141' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
         const courseId = req.params.id;
-        const result = await this.coursesService.delete(courseId, currentUserId)
+        const result = await this.coursesService.delete(authUserId, courseId)
         res.status(200).json(ResponseHandle.success({deletedCourse: result}))
     }
 }

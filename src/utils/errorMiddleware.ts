@@ -1,10 +1,11 @@
 import {ResponseHandle} from '../utils/responseHandle';
 import {NextFunction, Request, Response} from 'express';
+import {colors} from './colors';
 
 
 // срабатывает на каждый throw new Error()
-export const errorHandler = (error: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log('ERROR_MIDDLRAWERA ', error);
+export const errorMiddleware = (error: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log(`${colors.red} ErrorMiddleware: ${error}`);
 
     if (error.message === 'NOT_FOUND') {
         const httpStatus = 404

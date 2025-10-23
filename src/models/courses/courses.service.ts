@@ -21,11 +21,11 @@ export class CoursesService {
         return await this.courseRepository.create(data)
     }
 
-    async update(currentUserId: Types.ObjectId, courseId: Types.ObjectId, courseData: UpdateCourseInput) {
-        return await this.courseRepository.update(currentUserId, courseId, courseData)
+    async update(authUserId: string, courseId: string, courseData: UpdateCourseInput) {
+        return await this.courseRepository.update(authUserId, courseId, courseData)
     }
 
-    async delete(courseId: string, currentUserId: string) {
-        return await this.courseRepository.delete(courseId, currentUserId)
+    async delete(authUserId: string, courseId: string) {
+        return await this.courseRepository.delete(authUserId, courseId)
     }
 }

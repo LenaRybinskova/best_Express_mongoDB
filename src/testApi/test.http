@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### 4. удалить юзера
-DELETE {{base_url}}/users/68ee534d3e878ac744cad251
+DELETE {{base_url}}/users/68f89ec0d0913897c47e2404
 Content-Type: application/json
 
 

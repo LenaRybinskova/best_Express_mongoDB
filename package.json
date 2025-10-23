@@ -11,8 +11,9 @@
     "clean": "rm -rf dist",
     "ssl:generate": "mkdir .ssl && openssl req -nodes -new -x509 -keyout .ssl/key.pem -out .ssl/cert.pem -subj \"/CN=localhost\"",
     "test": "jest",
-    "test:watch": "jest --watch",
+    "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage",
+    "test:coverage-app": "jest --coverage --collectCoverageFrom=\"src/**/*.ts\"",
     "test:db": "ts-node src/scripts/testConnection.ts"
   },
   "keywords": [],

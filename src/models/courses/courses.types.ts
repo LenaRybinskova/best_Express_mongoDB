@@ -1,5 +1,6 @@
 import {z} from 'zod';
 
+// create schema ZOD
 export const CreateCourseSchema = z.object({
     title: z.string()
         .min(3, 'Название должно быть 3 символа')
@@ -28,8 +29,11 @@ export const CreateCourseSchema = z.object({
     .refine(data => new Date(data.endedAt) > new Date(data.startedAt), {
         message: 'Дата окончания должна быть после даты начала',
         path: ['endedAt'] // какой филд с ошибкой
-    });
+    })
+    .strict();
 
 export type CreateCourseInput = z.infer<typeof CreateCourseSchema>;
 
-export type UpdateCourseInput = Partial<CreateCourseInput>
+// update schema ZOD
+export const UpdateCourseSchema = CreateCourseSchema.partial().strict();
+export type UpdateCourseInput = z.infer<typeof UpdateCourseSchema>;

@@ -1,13 +1,11 @@
-import {NextFunction, Request, Response} from 'express';
+import {Request, Response} from 'express';
 import {UsersService} from './users.service';
 import {ResponseHandle} from '../../utils/responseHandle';
-import {UpdateUser} from 'models/users/user.types';
+import {UpdateCourseInput} from 'models/users/user.types';
 
 export class UsersController {
     constructor(private usersService: UsersService) {
     }
-
-    /*сделать глоб обработку ош, посмотр какой при успехе объект респонса буедет*/
     getUsers = async (req: Request, res: Response,) => {
         const users = await this.usersService.getAllUsers()
         res.status(200).json(ResponseHandle.success(users));
@@ -20,17 +18,17 @@ export class UsersController {
     }
 
     update = async (req: Request, res: Response) => {
+        const authUserId = "68f8cf6907cf39953f582141" // будем получать из заголовка
         const userId = req.params.id
-        const payload: UpdateUser = req.body;
-        console.log(payload)
-        const updateUser = await this.usersService.update(userId, payload)
+        const payload: UpdateCourseInput = req.body;
+        const updateUser = await this.usersService.update(authUserId, userId, payload)
         res.status(200).json(ResponseHandle.success(updateUser))
     }
 
-
     delete = async (req: Request, res: Response) => {
+        const authUserId = "68f8a5dc6759a1190fcec6f5" // будем получать из заголовка
         const userId = req.params.id
-        const result = await this.usersService.delete(userId)
-        res.status(204).json(ResponseHandle.success(result))
+        const result = await this.usersService.delete(authUserId, userId)
+        res.status(200).json(ResponseHandle.success(result))
     }
 }
