@@ -2,23 +2,21 @@ import {CourseModel, ICourse} from '../courses/courses.model';
 import {handleMongoError} from '../../utils/mongoDBErrorHandle';
 import {UpdateCourseInput} from '../courses/courses.types';
 import {Types} from 'mongoose';
-import {USER_ROLE, UserModel} from '../users/users.model';
+import {UserRepository} from '../users/users.repository';
 
 
 export class CourseRepository {
-
-    // метод для проверки: текущ юзер это автор курса или админ?
-    async checkAccessCourse(courseId: string | Types.ObjectId, currentUserId: string | Types.ObjectId, accessLevel?: typeof USER_ROLE): Promise<ICourse> {
+    constructor(private userRepository: UserRepository) {}
+    // метод для проверки: авторизовавшийся юзер это автор курса или роль="admin"?
+    async checkAccessCourse(courseId: string | Types.ObjectId, currentUserId: string | Types.ObjectId): Promise<ICourse> {
 
         const [course, user] = await Promise.all([
             this.getCourseById(courseId),
-            UserModel.findById(currentUserId)
+            this.userRepository.getById(currentUserId.toString())
         ]);
         const isUserAuthor = course.authorId.toString() === currentUserId.toString()
 
         const isAdmin = user?.role as string === 'admin';
-        console.log('isUserAuthor', isUserAuthor)
-        console.log('isAdmin', isAdmin)
 
         if (!isUserAuthor && !isAdmin) {
             throw new Error('FORBIDDEN');
@@ -34,7 +32,6 @@ export class CourseRepository {
             throw handleMongoError(error)
         }
     }
-
     async getCourseById(id: string | Types.ObjectId) {
         try {
             const course = await CourseModel.findById(id).select('-ratingStat -ratingCount -ratingCount -studentsId')
@@ -48,7 +45,6 @@ export class CourseRepository {
             throw handleMongoError(error)
         }
     }
-
     async create(courseData: ICourse) {
         try {
             console.log('create:', courseData)
@@ -57,7 +53,6 @@ export class CourseRepository {
             throw handleMongoError(error)
         }
     }
-
     async update(authUserId: string, courseId: string, courseData: UpdateCourseInput) {
         try {
             // проверка, админ или автор'?
@@ -74,7 +69,6 @@ export class CourseRepository {
             throw handleMongoError(error)
         }
     }
-
     async delete(authUserId: string, courseId: string) {
         try {
             // проверка, админ или автор'?

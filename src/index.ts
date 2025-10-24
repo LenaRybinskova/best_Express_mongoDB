@@ -30,7 +30,6 @@ const start = async () => {
     }
 }
 
-
 process.on('SIGINT', async () => {
     await mongoose.disconnect()
     console.log('App closed')

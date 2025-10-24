@@ -7,28 +7,37 @@ import {colors} from './colors';
 export const errorMiddleware = (error: Error, req: Request, res: Response, next: NextFunction) => {
     console.log(`${colors.red} ErrorMiddleware: ${error}`);
 
-    if (error.message === 'NOT_FOUND') {
-        const httpStatus = 404
-        console.log('404')
-        return res.status(httpStatus).json(ResponseHandle.error('NOT_FOUND', httpStatus));
+    let httpStatus: number;
+    let errorCode: string;
+
+    switch (error.message) {
+        case 'NOT_FOUND':
+            httpStatus = 404;
+            errorCode = 'NOT_FOUND';
+            console.log('404 - Resource not found');
+            break;
+
+        case 'VALIDATION_ERROR':
+            httpStatus = 400;
+            errorCode = 'VALIDATION_ERROR';
+            break;
+
+        case 'DATABASE_UNAVAILABLE':
+            httpStatus = 503;
+            errorCode = 'DATABASE_UNAVAILABLE';
+            break;
+
+        case 'FORBIDDEN':
+            httpStatus = 403;
+            errorCode = 'FORBIDDEN';
+            break;
+
+        default:
+            httpStatus = 500;
+            errorCode = 'INTERNAL_ERROR';
+            console.log('500 - Internal server error:', error);
+            break;
     }
 
-    if (error.message === 'VALIDATION_ERROR') {
-        const httpStatus = 400
-        return res.status(httpStatus).json(ResponseHandle.error('VALIDATION_ERROR', httpStatus));
-    }
-
-    if (error.message === 'DATABASE_UNAVAILABLE') {
-        const httpStatus = 503
-        return res.status(503).json(ResponseHandle.error('DATABASE_UNAVAILABLE', httpStatus));
-    }
-
-    if (error.message === 'FORBIDDEN') {
-        const httpStatus = 403
-        return res.status(403).json(ResponseHandle.error('FORBIDDEN', httpStatus));
-    }
-
-    // все остальные ошибки
-    const httpStatus = 500
-    res.status(500).json(ResponseHandle.error('INTERNAL_ERROR', httpStatus, error));
+    res.status(httpStatus).json(ResponseHandle.error(errorCode, httpStatus, error));
 };

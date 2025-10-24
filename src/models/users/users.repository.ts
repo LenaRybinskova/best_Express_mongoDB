@@ -64,7 +64,7 @@ export class UserRepository {
             await this.isAccess(authUserId, id)
 
             //если у польз уже isActive=false ( как бы его удалили) - то вернем ошибку
-            if (!this.isActiveUser(id)) {
+            if ( !this.isActiveUser(id)) {
                 throw new Error('NOT_FOUND');
             }
 

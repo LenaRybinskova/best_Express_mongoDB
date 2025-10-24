@@ -4,10 +4,12 @@ import {CoursesService} from './courses.service';
 import {CourseRepository} from './courses.repository';
 import {zodIDValidationMiddleware} from '../../utils/zodValidation/zodIDValidationMiddleware';
 import {IdParamSchema} from '../users/user.types';
+import {UserRepository} from '../users/users.repository';
 
 
 export const coursesRouter = Router();
-const courseRepository = new CourseRepository();
+const userRepository = new UserRepository();
+const courseRepository = new CourseRepository(userRepository);
 const courseService = new CoursesService(courseRepository);
 const coursesController = new CoursesController(courseService);
 

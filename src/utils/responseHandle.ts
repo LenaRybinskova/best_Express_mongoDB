@@ -1,7 +1,6 @@
 export const ResponseHandle = {
     success(data: any) {
 
-        console.log("4 data", data)
         return {
             result: 0,
             data: data ?? null

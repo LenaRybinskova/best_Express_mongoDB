@@ -9,19 +9,16 @@ import {Types} from 'mongoose';
 export class CoursesController {
     constructor(private coursesService: CoursesService) {
     }
-
     getCourses = async (req: Request, res: Response) => {
         const courses = await this.coursesService.getAllCourses()
         res.status(200).json(ResponseHandle.success(courses))
     }
-
     getCourseById = async (req: Request, res: Response) => {
         const courseId = req.params.id;
         const objectCourseId = new Types.ObjectId(courseId);
         const course = await this.coursesService.getCourseById(objectCourseId)
         res.status(200).json(ResponseHandle.success(course))
     }
-
     create = async (req: Request, res: Response) => {
         const authUserId = '68f8cf6907cf39953f582141' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА из заголовка, когда авториз будет готова
 
@@ -50,10 +47,9 @@ export class CoursesController {
         const result = await this.coursesService.create(newCourse)
         res.status(201).json(ResponseHandle.success(result))
     }
-
     update = async (req: Request, res: Response) => {
 
-        const authUserId = '68f8cf6907cf39953f582142' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
+        const authUserId = '68f8cf6907cf39953f582141' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
 
         const courseId = req.params.id;
 
@@ -64,7 +60,7 @@ export class CoursesController {
     }
 
     delete = async (req: Request, res: Response) => {
-        const authUserId = '68f8cf6907cf39953f582142' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
+        const authUserId = '68f8cf6907cf39953f582141' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
         const courseId = req.params.id;
         const result = await this.coursesService.delete(authUserId, courseId)
         res.status(200).json(ResponseHandle.success({deletedCourse: result}))
