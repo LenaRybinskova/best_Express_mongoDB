@@ -6,6 +6,7 @@ import {UpdateCourseInput} from 'models/users/user.types';
 export class UsersController {
     constructor(private usersService: UsersService) {
     }
+
     getUsers = async (req: Request, res: Response,) => {
         const users = await this.usersService.getAllUsers()
         res.status(200).json(ResponseHandle.success(users));
@@ -18,7 +19,7 @@ export class UsersController {
     }
 
     update = async (req: Request, res: Response) => {
-        const authUserId = "68f8cf6907cf39953f582141" // будем получать из заголовка
+        const authUserId = '68fb2fd05fb69c878ef02369' // будем получать из заголовка
         const userId = req.params.id
         const payload: UpdateCourseInput = req.body;
         const updateUser = await this.usersService.update(authUserId, userId, payload)
@@ -26,7 +27,7 @@ export class UsersController {
     }
 
     delete = async (req: Request, res: Response) => {
-        const authUserId = "68f8a5dc6759a1190fcec6f5" // будем получать из заголовка
+        const authUserId = '68fb45257c344941ac174670' // будем получать из заголовка
         const userId = req.params.id
         const result = await this.usersService.delete(authUserId, userId)
         res.status(200).json(ResponseHandle.success(result))

@@ -1,5 +1,6 @@
 import {UserRepository} from './users.repository';
 import {UpdateCourseInput} from '../users/user.types';
+import {SoftDeleteUser} from 'models/users/users.model';
 
 
 export class UsersService {
@@ -33,7 +34,13 @@ export class UsersService {
     }
 
     async delete(authUserId: string, id: string) {
-        const deletedUser = await this.userRepository.delete(authUserId, id)
+
+        const payload: SoftDeleteUser = {
+            isActive: false,
+            deletedAt: new Date(),
+        }
+
+        const deletedUser = await this.userRepository.delete(authUserId, id, payload)
         if (!deletedUser) {
             throw new Error('NOT_FOUND');
         }

@@ -14,7 +14,7 @@ const userController = new UsersController(userService);
 
 usersRouter
     .get('/', userController.getUsers)
-    .get('/:id',zodIDValidationMiddleware("id",IdParamSchema), userController.getUserById)
-    .patch('/:id',zodIDValidationMiddleware("id",IdParamSchema), zodValidateBodyMiddleware(UpdateCourseSchema), userController.update) // c фр приходит только ид и поле, которое меняем
-    .delete('/:id',zodIDValidationMiddleware("id",IdParamSchema), userController.delete)
+    .get('/:id', zodIDValidationMiddleware('id', IdParamSchema), userController.getUserById)
+    .patch('/:id', zodIDValidationMiddleware('id', IdParamSchema), zodValidateBodyMiddleware(UpdateCourseSchema), userController.update) // c фр приходит только ид и поле, которое меняем
+    .delete('/:id', zodIDValidationMiddleware('id', IdParamSchema), userController.delete)
 

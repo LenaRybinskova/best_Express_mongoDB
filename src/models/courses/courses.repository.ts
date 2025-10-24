@@ -80,13 +80,14 @@ export class CourseRepository {
             // проверка, админ или автор'?
             await this.checkAccessCourse(courseId, authUserId);
 
-            const result = await CourseModel.findByIdAndDelete(courseId);
+            const result = await CourseModel.findByIdAndDelete(new Types.ObjectId(courseId));
             if (!result || null) {
                 throw new Error('NOT_FOUND')
             }
 
             return result;
         } catch (error) {
+            console.log('MONGODB ERROR:', error)
             throw handleMongoError(error)
         }
     }

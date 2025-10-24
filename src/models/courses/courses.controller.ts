@@ -53,7 +53,7 @@ export class CoursesController {
 
     update = async (req: Request, res: Response) => {
 
-        const authUserId = '68f8cf6907cf39953f582141' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
+        const authUserId = '68f8cf6907cf39953f582142' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
 
         const courseId = req.params.id;
 
@@ -64,7 +64,7 @@ export class CoursesController {
     }
 
     delete = async (req: Request, res: Response) => {
-        const authUserId = '68f8cf6907cf39953f582141' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
+        const authUserId = '68f8cf6907cf39953f582142' // в будущем ВОЗЬМЕМ ИЗ ТОКЕНА
         const courseId = req.params.id;
         const result = await this.coursesService.delete(authUserId, courseId)
         res.status(200).json(ResponseHandle.success({deletedCourse: result}))

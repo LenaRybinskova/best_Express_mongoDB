@@ -25,6 +25,8 @@
 - availableCourses (References)
 - authorCourses (References)
 - comments (References)
+- isActive (в случае удаления пользователя - false)
+- deletedAt
 
 # Course:
 

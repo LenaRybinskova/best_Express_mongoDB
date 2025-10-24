@@ -1,4 +1,4 @@
-import {IUser, USER_ROLE, UserModel} from './users.model';
+import {SoftDeleteUser, USER_ROLE, UserModel} from './users.model';
 import {handleMongoError} from '../../utils/mongoDBErrorHandle';
 import {UpdateCourseInput, UserWithoutPassword} from '../users/user.types';
 import {Types} from 'mongoose';
@@ -20,9 +20,15 @@ export class UserRepository {
         return true;
     }
 
+    // метод для проверки - юзер действующий или "удален" ?
+    async isActiveUser(userId: string | Types.ObjectId) {
+        const user = await UserModel.findById(userId)
+        return user?.isActive === true;
+    }
+
     async getAllUsers() {
         try {
-            return await UserModel.find({}).select('-password')
+            return await UserModel.find({isActive: true})
         } catch (error: any) {
             throw handleMongoError(error)
         }
@@ -30,22 +36,22 @@ export class UserRepository {
 
     async getById(id: string) {
         try {
-            return await UserModel.findById(id).select('-password')
+            return await UserModel.findById(id)
         } catch (error: any) {
             throw handleMongoError(error)
         }
     }
 
-    async update(authUserId:string, id: string, payload: UpdateCourseInput) {
+    async update(authUserId: string, id: string, payload: UpdateCourseInput) {
         try {
-           await this.isAccess(authUserId, id)
+            await this.isAccess(authUserId, id)
 
             const updatedUser = await UserModel.findByIdAndUpdate(id, payload,
                 {
                     new: true, // в ответе будет юзер с обновл данными
                     runValidators: true // еще раз валидацию по схеме прогонит
                 }
-            ).select('-password');
+            )
 
             return updatedUser;
         } catch (error) {
@@ -53,13 +59,26 @@ export class UserRepository {
         }
     }
 
-    async delete(authUserId:string,id: string) {
+    async delete(authUserId: string, id: string, payload: SoftDeleteUser) {
         try {
             await this.isAccess(authUserId, id)
 
-            return await UserModel.findByIdAndDelete(id).select('-password');
+            //если у польз уже isActive=false ( как бы его удалили) - то вернем ошибку
+            if (!this.isActiveUser(id)) {
+                throw new Error('NOT_FOUND');
+            }
+
+            /*            return await UserModel.findByIdAndDelete(id).select('-password -isActive ');*/
+
+            const softDeleteduser = await UserModel.findByIdAndUpdate(id, payload,
+                {
+                    new: false, // в ответе будет юзер с обновл данными
+                    runValidators: true // еще раз валидацию по схеме прогонит
+                })
+
+            return softDeleteduser
+
         } catch (error) {
-            console.log('1')
             throw handleMongoError(error)
         }
     }

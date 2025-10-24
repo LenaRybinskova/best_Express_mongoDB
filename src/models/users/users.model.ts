@@ -21,25 +21,33 @@ export interface IUser extends Document {
     role?: UserRole;
     availableCourses?: Types.ObjectId[];
     authorCourses?: Types.ObjectId[];
-    commentsId?:Types.ObjectId[]
+    commentsId?: Types.ObjectId[]
     createdAt: Date;
     updatedAt: Date;
+
+    isActive?: boolean;
+    deletedAt?: Date;
 }
 
 const userSchema = new Schema<IUser>({
-    login: { type: String, required: true },
-    password: { type: String, required: true },
-    email: { type: String,lowercase: true, required: true, unique: true },
+    login: {type: String, required: true},
+    password: {type: String, select: false, required: true},
+    email: {type: String, lowercase: true, required: true, unique: true},
 
-    firstName: { type: String, required: false },
-    lastName: { type: String, required: false },
-    avatar: { type: String, required: false },
-    experience: { type: Number, required: false },
-    role: { type: String, enum: Object.values(USER_ROLE), default: USER_ROLE.USER },
-    availableCourses:[{type: Schema.Types.ObjectId, ref: 'Course'}],  //доступные курсы [id, id]
-    authorCourses:[{type:Schema.Types.ObjectId, ref: 'Course'}],      //является автором курсов[id, id]
-    commentsId: [{type:Schema.Types.ObjectId, ref: 'Comment'}], //все его комментарии [id, id]
+    firstName: {type: String, required: false},
+    lastName: {type: String, required: false},
+    avatar: {type: String, required: false},
+    experience: {type: Number, required: false},
+    role: {type: String, enum: Object.values(USER_ROLE), default: USER_ROLE.USER},
+    availableCourses: [{type: Schema.Types.ObjectId, ref: 'Course'}],  //доступные курсы [id, id]
+    authorCourses: [{type: Schema.Types.ObjectId, ref: 'Course'}],      //является автором курсов[id, id]
+    commentsId: [{type: Schema.Types.ObjectId, ref: 'Comment'}], //все его комментарии [id, id]
 
-},{timestamps: true})
+    isActive: {type: Boolean, select: false, default: true, index: true},
+    deletedAt: {type: Date, select: false, required: false, index: true},
+}, {timestamps: true})
 
 export const UserModel = model('User', userSchema)
+
+export interface SoftDeleteUser extends Pick<IUser, 'isActive' | 'deletedAt'> {
+}
