@@ -1,6 +1,7 @@
 import {SoftDeleteUser, USER_ROLE, UserModel} from './users.model';
-import {handleMongoError} from '../../utils/mongoDBErrorHandle';
-import {UpdateCourseInput, UserWithoutPassword} from '../users/user.types';
+import {handleMongoError} from '../../utils/handleError/mongoDBErrorHandle';
+import { UserWithoutPassword} from '../users/user.types';
+import { UpdateCourseInput,} from '../courses/courses.types';
 import {Types} from 'mongoose';
 
 export class UserRepository {

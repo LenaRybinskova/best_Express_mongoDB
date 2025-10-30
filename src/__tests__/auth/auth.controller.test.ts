@@ -5,7 +5,7 @@ import {Request, Response, NextFunction} from 'express';
 /*jest.mock('../../utils/zodValidation/zodErrorHandle');*/
 /*jest.mock('../../utils/responseHandle');*/
 
-import {ResponseHandle} from "../../utils/responseHandle"
+import {ResponseHandle} from "../../utils/handleError/responseHandle"
 import { handleZodError } from '../../utils/zodValidation/zodErrorHandle';
 
 

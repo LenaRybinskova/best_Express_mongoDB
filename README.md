@@ -39,7 +39,7 @@
 - price
 - lessonsId (References)
 - commentsId (References)
-- ratingStat (Embedded) [{id, rating}, {}, {}]
+- ratingStat  [{id, rating}, {}, {}]
 - ratingResult ()
 - ratingCount
 - studentsId (кто прошел курс) (References)

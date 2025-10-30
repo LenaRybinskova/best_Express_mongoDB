@@ -1,5 +1,5 @@
 import {IUser, UserModel} from '../users/users.model';
-import {handleMongoError} from '../../utils/mongoDBErrorHandle';
+import {handleMongoError} from '../../utils/handleError/mongoDBErrorHandle';
 import {CreateUserInput} from 'models/users/user.types';
 import {RegisterUserRes} from 'models/auth/auth.types';
 
@@ -8,7 +8,7 @@ export class AuthRepository {
         try {
             const newUser = await UserModel.create(data)
 
-            const newUserResponse:RegisterUserRes = {
+            const newUserResponse: RegisterUserRes = {
                 login: newUser.login,
                 email: newUser.email,
             }

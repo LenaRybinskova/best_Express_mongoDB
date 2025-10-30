@@ -1,5 +1,5 @@
 import {UserRepository} from './users.repository';
-import {UpdateCourseInput} from '../users/user.types';
+import {UpdateCourseInput} from '../courses/courses.types';
 import {SoftDeleteUser} from 'models/users/users.model';
 
 

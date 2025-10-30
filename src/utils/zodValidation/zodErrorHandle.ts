@@ -1,6 +1,6 @@
 import {ZodError} from 'zod';
 import {Response} from 'express';
-import {ResponseHandle} from '../responseHandle';
+import {ResponseHandle} from '../handleError/responseHandle';
 
 export const handleZodError = (error: ZodError, res: Response): void => {
     const errorDetails = {

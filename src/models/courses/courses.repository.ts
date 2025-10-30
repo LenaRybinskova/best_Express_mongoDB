@@ -1,28 +1,12 @@
 import {CourseModel, ICourse} from '../courses/courses.model';
-import {handleMongoError} from '../../utils/mongoDBErrorHandle';
+import {handleMongoError} from '../../utils/handleError/mongoDBErrorHandle';
 import {UpdateCourseInput} from '../courses/courses.types';
 import {Types} from 'mongoose';
 import {UserRepository} from '../users/users.repository';
 
 
 export class CourseRepository {
-    constructor(private userRepository: UserRepository) {}
-    // метод для проверки: авторизовавшийся юзер это автор курса или роль="admin"?
-    async checkAccessCourse(courseId: string | Types.ObjectId, currentUserId: string | Types.ObjectId): Promise<ICourse> {
-
-        const [course, user] = await Promise.all([
-            this.getCourseById(courseId),
-            this.userRepository.getById(currentUserId.toString())
-        ]);
-        const isUserAuthor = course.authorId.toString() === currentUserId.toString()
-
-        const isAdmin = user?.role as string === 'admin';
-
-        if (!isUserAuthor && !isAdmin) {
-            throw new Error('FORBIDDEN');
-        }
-
-        return course;
+    constructor(private userRepository: UserRepository) {
     }
 
     async getAllCourses() {
@@ -32,7 +16,8 @@ export class CourseRepository {
             throw handleMongoError(error)
         }
     }
-    async getCourseById(id: string | Types.ObjectId) {
+
+    async getCourseById(id: Types.ObjectId) {
         try {
             const course = await CourseModel.findById(id).select('-ratingStat -ratingCount -ratingCount -studentsId')
 
@@ -45,6 +30,7 @@ export class CourseRepository {
             throw handleMongoError(error)
         }
     }
+
     async create(courseData: ICourse) {
         try {
             console.log('create:', courseData)
@@ -53,11 +39,9 @@ export class CourseRepository {
             throw handleMongoError(error)
         }
     }
-    async update(authUserId: string, courseId: string, courseData: UpdateCourseInput) {
-        try {
-            // проверка, админ или автор'?
-            await this.checkAccessCourse(courseId, authUserId);
 
+    async update(authUserId: Types.ObjectId, courseId: Types.ObjectId, courseData: UpdateCourseInput) {
+        try {
             return await CourseModel.findByIdAndUpdate(courseId, courseData,
                 {
                     new: true, // в ответе будет курс с обновл данными
@@ -69,11 +53,9 @@ export class CourseRepository {
             throw handleMongoError(error)
         }
     }
-    async delete(authUserId: string, courseId: string) {
-        try {
-            // проверка, админ или автор'?
-            await this.checkAccessCourse(courseId, authUserId);
 
+    async delete(authUserId: Types.ObjectId, courseId: Types.ObjectId) {
+        try {
             const result = await CourseModel.findByIdAndDelete(new Types.ObjectId(courseId));
             if (!result || null) {
                 throw new Error('NOT_FOUND')

@@ -10,7 +10,7 @@ import {UserRepository} from '../users/users.repository';
 export const coursesRouter = Router();
 const userRepository = new UserRepository();
 const courseRepository = new CourseRepository(userRepository);
-const courseService = new CoursesService(courseRepository);
+const courseService = new CoursesService(courseRepository, userRepository);
 const coursesController = new CoursesController(courseService);
 
 coursesRouter

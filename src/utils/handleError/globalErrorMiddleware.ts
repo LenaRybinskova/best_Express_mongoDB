@@ -1,11 +1,10 @@
-import {ResponseHandle} from '../utils/responseHandle';
 import {NextFunction, Request, Response} from 'express';
-import {colors} from './colors';
+import {colors} from '../colors';
+import {ResponseHandle} from '../handleError/responseHandle';
 
+export const globalErrorHandler = (error: Error, req: Request, res: Response, next: NextFunction) => {
 
-// срабатывает на каждый throw new Error()
-export const errorMiddleware = (error: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(`${colors.red} ErrorMiddleware: ${error}`);
+    console.log(`${colors.red} globalErrorHandler: ${error}`);
 
     let httpStatus: number;
     let errorCode: string;
@@ -16,22 +15,18 @@ export const errorMiddleware = (error: Error, req: Request, res: Response, next:
             errorCode = 'NOT_FOUND';
             console.log('404 - Resource not found');
             break;
-
         case 'VALIDATION_ERROR':
             httpStatus = 400;
             errorCode = 'VALIDATION_ERROR';
             break;
-
         case 'DATABASE_UNAVAILABLE':
             httpStatus = 503;
             errorCode = 'DATABASE_UNAVAILABLE';
             break;
-
         case 'FORBIDDEN':
             httpStatus = 403;
             errorCode = 'FORBIDDEN';
             break;
-
         default:
             httpStatus = 500;
             errorCode = 'INTERNAL_ERROR';
@@ -40,4 +35,4 @@ export const errorMiddleware = (error: Error, req: Request, res: Response, next:
     }
 
     res.status(httpStatus).json(ResponseHandle.error(errorCode, httpStatus, error));
-};
+}
