@@ -25,6 +25,8 @@
 - availableCourses (References)
 - authorCourses (References)
 - comments (References)
+- isActive (в случае удаления пользователя - false)
+- deletedAt
 
 # Course:
 
@@ -37,7 +39,7 @@
 - price
 - lessonsId (References)
 - commentsId (References)
-- ratingStat (Embedded) [{id, rating}, {}, {}]
+- ratingStat  [{id, rating}, {}, {}]
 - ratingResult ()
 - ratingCount
 - studentsId (кто прошел курс) (References)
