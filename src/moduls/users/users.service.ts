@@ -1,6 +1,6 @@
 import {UserRepository} from './users.repository';
 import {UpdateCourseInput} from '../courses/courses.types';
-import {SoftDeleteUser} from 'models/users/users.model';
+import {SoftDeleteUser} from 'moduls/users/users.model';
 
 
 export class UsersService {

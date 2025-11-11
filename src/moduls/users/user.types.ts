@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import {IUser} from '../../models/users/users.model';
+import {IUser} from '../users/users.model';
 
 // Request types
 // create user schema ZOD

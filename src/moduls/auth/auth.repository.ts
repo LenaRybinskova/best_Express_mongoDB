@@ -1,7 +1,7 @@
 import {IUser, UserModel} from '../users/users.model';
 import {handleMongoError} from '../../utils/handleError/mongoDBErrorHandle';
-import {CreateUserInput} from 'models/users/user.types';
-import {RegisterUserRes} from 'models/auth/auth.types';
+import {CreateUserInput} from 'moduls/users/user.types';
+import {RegisterUserRes} from 'moduls/auth/auth.types';
 
 export class AuthRepository {
     async create(data: CreateUserInput) {

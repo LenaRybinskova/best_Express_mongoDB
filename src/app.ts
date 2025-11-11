@@ -1,7 +1,7 @@
 import express from 'express';
-import {usersRouter} from './models/users/users.router';
-import {coursesRouter} from './models/courses/courses.router';
-import {authRouter} from './models/auth/auth.router';
+import {usersRouter} from './moduls/users/users.router';
+import {coursesRouter} from './moduls/courses/courses.router';
+import {authRouter} from './moduls/auth/auth.router';
 import {globalErrorHandler} from '../src/utils/handleError/globalErrorMiddleware';
 
 const app = express();

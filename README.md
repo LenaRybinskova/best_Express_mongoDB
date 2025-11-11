@@ -1,3 +1,13 @@
+# Запустить проект:
+```
+npm install 
+npm run ssl:generate
+npm run dev 
+
+```
+
+
+
 ### Проект: Образовательная платформа
 
 Стек: Experss.js, MongoDB (Mongoose)

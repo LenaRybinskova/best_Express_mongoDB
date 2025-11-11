@@ -1,4 +1,4 @@
-import {CreateUserZodSchema} from '../../models/users/user.types';
+import {CreateUserZodSchema} from '../../moduls/users/user.types';
 import {zodValidateBodyMiddleware} from '../../utils/zodValidation/zodValidateBodyMiddleware';
 import {Request, Response, NextFunction} from 'express';
 

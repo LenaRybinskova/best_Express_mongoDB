@@ -1,6 +1,6 @@
 import {CourseRepository} from './courses.repository';
 import {ICourse} from '../courses/courses.model';
-import {UpdateCourseInput} from 'models/courses/courses.types';
+import {UpdateCourseInput} from 'moduls/courses/courses.types';
 import {Types} from 'mongoose';
 import {UserRepository} from '../users/users.repository';
 
