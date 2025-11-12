@@ -43,7 +43,7 @@ export class CoursesService {
 
     async update(authUserId: Types.ObjectId, courseId: Types.ObjectId, courseData: UpdateCourseInput) {
         await this.checkAccessCourse(courseId, authUserId)
-        return await this.courseRepository.update(authUserId, courseId, courseData)
+        return await this.courseRepository.update(courseId, courseData)
     }
 
     async delete(authUserId: Types.ObjectId, courseId: Types.ObjectId) {

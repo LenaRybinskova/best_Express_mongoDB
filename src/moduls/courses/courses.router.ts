@@ -2,9 +2,10 @@ import {Router} from 'express';
 import {CoursesController} from './courses.controller';
 import {CoursesService} from './courses.service';
 import {CourseRepository} from './courses.repository';
-import {zodIDValidationMiddleware} from '../../utils/zodValidation/zodIDValidationMiddleware';
 import {IdParamSchema} from '../users/user.types';
 import {UserRepository} from '../users/users.repository';
+import {lessonRouter} from '../lessons/lesson.router';
+import {zodIDValidationMiddleware} from '../../utils/zodValidation/zodIDValidationMiddleware';
 
 
 export const coursesRouter = Router();
@@ -19,4 +20,7 @@ coursesRouter
     .post('/', coursesController.create)
     .patch('/:id', zodIDValidationMiddleware('id', IdParamSchema), coursesController.update)
     .delete('/:id', zodIDValidationMiddleware('id', IdParamSchema), coursesController.delete)
+
+// родительский роутер олавливаем роут с префиксом "course" и перенаправляет в дочерний lessonRouter
+coursesRouter.use('/:courseId/lessons', lessonRouter);
 

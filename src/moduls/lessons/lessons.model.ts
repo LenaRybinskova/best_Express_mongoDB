@@ -6,12 +6,12 @@ export interface ILesson extends Document {
     title: string
     description: string
     startedAt: Date
-    commentsId: Types.ObjectId[]
-    studentsId: Types.ObjectId[]
+    commentsId?: Types.ObjectId[]
+    studentsId?: Types.ObjectId[]
     resources: {
-        files: String[]
+        files: string[]
         video: string
-        resourceLink: string
+        resourceLink: string[]
     }
     createdAt: Date
     updatedAt: Date
@@ -25,9 +25,13 @@ const lessonSchema = new Schema<ILesson>({
     commentsId: [{type: Schema.Types.ObjectId, ref: 'Comment', required: false}],
     studentsId: [{type: Schema.Types.ObjectId, ref: 'User', required: false}],
     resources: {
-        files: [{type: String}],
-        video: {type: String, required: false},
-        resourceLink: {type: String, required: false},
+        type:
+            {
+                files: [{type: [String], default: []}],
+                video: {type: String, default: "", required: false},
+                resourceLink: {type: [String],  default: [], required: false},
+            },
+        default: {}
     }
 }, {timestamps: true})
 

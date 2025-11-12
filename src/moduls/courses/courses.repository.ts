@@ -40,7 +40,7 @@ export class CourseRepository {
         }
     }
 
-    async update(authUserId: Types.ObjectId, courseId: Types.ObjectId, courseData: UpdateCourseInput) {
+    async update(courseId: Types.ObjectId, courseData: UpdateCourseInput) {
         try {
             return await CourseModel.findByIdAndUpdate(courseId, courseData,
                 {
@@ -64,6 +64,25 @@ export class CourseRepository {
             return result;
         } catch (error) {
             console.log('MONGODB ERROR:', error)
+            throw handleMongoError(error)
+        }
+    }
+
+// метод для добавления в ссылочные поля новых Ид Уроков, Комментариев, Студентов
+    async addIdWithRef(courseId: Types.ObjectId, nameFiendID: string, id: Types.ObjectId) {
+        try {
+            console.log("addIdWithRe 111111111" )
+            return await CourseModel.findByIdAndUpdate(
+                courseId,
+                {
+                    $push: {
+                        [nameFiendID]: id  // в какое поле добавляем новосозданный Ид? ,
+                        // например в lessonsId добавляем только что созданный в LesssonRepo лессонИд.
+                    }
+                },
+                {new: true}
+            );
+        } catch (error) {
             throw handleMongoError(error)
         }
     }
