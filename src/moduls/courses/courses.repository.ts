@@ -1,6 +1,6 @@
 import {CourseModel, ICourse} from '../courses/courses.model';
 import {handleMongoError} from '../../utils/handleError/mongoDBErrorHandle';
-import {UpdateCourseInput} from '../courses/courses.types';
+import {CreateCourseDTO, UpdateCourseDTO} from '../courses/courses.types';
 import {Types} from 'mongoose';
 import {UserRepository} from '../users/users.repository';
 
@@ -19,7 +19,7 @@ export class CourseRepository {
 
     async getCourseById(id: Types.ObjectId) {
         try {
-            const course = await CourseModel.findById(id).select('-ratingStat -ratingCount -ratingCount -studentsId')
+            const course = await CourseModel.findById(id).select('-ratingStat -ratingCount -ratingCount -studentsId').populate('lessonsId')
 
             if (course === null) {
                 throw new Error('NOT_FOUND')
@@ -31,7 +31,7 @@ export class CourseRepository {
         }
     }
 
-    async create(courseData: ICourse) {
+    async create(courseData: CreateCourseDTO) {
         try {
             console.log('create:', courseData)
             return await CourseModel.create(courseData);
@@ -40,7 +40,7 @@ export class CourseRepository {
         }
     }
 
-    async update(courseId: Types.ObjectId, courseData: UpdateCourseInput) {
+    async update(courseId: Types.ObjectId, courseData: UpdateCourseDTO) {
         try {
             return await CourseModel.findByIdAndUpdate(courseId, courseData,
                 {
@@ -71,7 +71,7 @@ export class CourseRepository {
 // метод для добавления в ссылочные поля новых Ид Уроков, Комментариев, Студентов
     async addIdWithRef(courseId: Types.ObjectId, nameFiendID: string, id: Types.ObjectId) {
         try {
-            console.log("addIdWithRe 111111111" )
+            console.log('addIdWithRe 111111111')
             return await CourseModel.findByIdAndUpdate(
                 courseId,
                 {
@@ -82,6 +82,38 @@ export class CourseRepository {
                 },
                 {new: true}
             );
+        } catch (error) {
+            throw handleMongoError(error)
+        }
+    }
+
+
+    async deleteIdWithRef(courseId: string, nameFiendID: string, id: string) {
+        try {
+            return await CourseModel.findByIdAndUpdate(
+                courseId,
+                {
+                    $pull: {
+                        [nameFiendID]: id
+                    }
+                },
+                {new: true}
+            );
+        } catch (error) {
+            throw handleMongoError(error)
+        }
+    }
+
+    // метод для проверки принадлежит ли Ид урока к курсу
+    async checkIDLessonInCourse(courseId: string, lessonId: string) {
+        try {
+            //явно указываем что идУрока искать в массиве lessonsId
+            const isLessonExist = CourseModel.findOne({_id: courseId, lessonsId: { $in: [lessonId] }})
+
+            if (!isLessonExist) {
+                throw new Error('NOT_FOUND')
+            }
+            return true
         } catch (error) {
             throw handleMongoError(error)
         }

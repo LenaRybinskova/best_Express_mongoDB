@@ -3,7 +3,6 @@
 npm install 
 npm run ssl:generate
 npm run dev 
-
 ```
 
 
@@ -74,3 +73,9 @@ npm run dev
 - courseId (References)
 - dataPublish
 - text
+
+
+
+```
+ npx ts-node migrations/migrate-lesson-video.ts
+```

@@ -1,7 +1,7 @@
 import {SoftDeleteUser, USER_ROLE, UserModel} from './users.model';
 import {handleMongoError} from '../../utils/handleError/mongoDBErrorHandle';
 import { UserWithoutPassword} from '../users/user.types';
-import { UpdateCourseInput,} from '../courses/courses.types';
+import { UpdateCourseDTO,} from '../courses/courses.types';
 import {Types} from 'mongoose';
 
 export class UserRepository {
@@ -43,7 +43,7 @@ export class UserRepository {
         }
     }
 
-    async update(authUserId: string, id: string, payload: UpdateCourseInput) {
+    async update(authUserId: string, id: string, payload: UpdateCourseDTO) {
         try {
             await this.isAccess(authUserId, id)
 

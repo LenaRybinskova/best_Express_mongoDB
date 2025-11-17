@@ -21,6 +21,6 @@ coursesRouter
     .patch('/:id', zodIDValidationMiddleware('id', IdParamSchema), coursesController.update)
     .delete('/:id', zodIDValidationMiddleware('id', IdParamSchema), coursesController.delete)
 
-// родительский роутер олавливаем роут с префиксом "course" и перенаправляет в дочерний lessonRouter
+// родительский роутер отлавливает роут с префиксом "course" и перенаправляет в дочерний lessonRouter с параметром courseId
 coursesRouter.use('/:courseId/lessons', lessonRouter);
 

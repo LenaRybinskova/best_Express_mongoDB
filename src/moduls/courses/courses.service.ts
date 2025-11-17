@@ -1,6 +1,6 @@
 import {CourseRepository} from './courses.repository';
 import {ICourse} from '../courses/courses.model';
-import {UpdateCourseInput} from 'moduls/courses/courses.types';
+import {CreateCourseDTO, UpdateCourseDTO} from 'moduls/courses/courses.types';
 import {Types} from 'mongoose';
 import {UserRepository} from '../users/users.repository';
 
@@ -37,11 +37,11 @@ export class CoursesService {
         return await this.courseRepository.getCourseById(id)
     }
 
-    async create(data: ICourse) {
+    async create(data: CreateCourseDTO) {
         return await this.courseRepository.create(data)
     }
 
-    async update(authUserId: Types.ObjectId, courseId: Types.ObjectId, courseData: UpdateCourseInput) {
+    async update(authUserId: Types.ObjectId, courseId: Types.ObjectId, courseData: UpdateCourseDTO) {
         await this.checkAccessCourse(courseId, authUserId)
         return await this.courseRepository.update(courseId, courseData)
     }

@@ -1,5 +1,5 @@
 import {UserRepository} from './users.repository';
-import {UpdateCourseInput} from '../courses/courses.types';
+import {UpdateCourseDTO} from '../courses/courses.types';
 import {SoftDeleteUser} from 'moduls/users/users.model';
 
 
@@ -22,7 +22,7 @@ export class UsersService {
         return user;
     }
 
-    async update(authUserId: string, id: string, payload: UpdateCourseInput) {
+    async update(authUserId: string, id: string, payload: UpdateCourseDTO) {
 
         const updatedUser = await this.userRepository.update(authUserId, id, payload)
 

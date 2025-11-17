@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {UsersService} from './users.service';
 import {ResponseHandle} from '../../utils/handleError/responseHandle';
-import {UpdateCourseInput} from '../courses/courses.types';
+import {UpdateCourseDTO} from '../courses/courses.types';
 import errorCatchAsync from '../../utils/handleError/errorCatchAsync';
 
 export class UsersController {
@@ -22,7 +22,7 @@ export class UsersController {
     update = errorCatchAsync(async (req: Request, res: Response) => {
         const authUserId = '68fb2fd05fb69c878ef02369' // будем получать из заголовка
         const userId = req.params.id
-        const payload: UpdateCourseInput = req.body;
+        const payload: UpdateCourseDTO = req.body;
         const updateUser = await this.usersService.update(authUserId, userId, payload)
         res.status(200).json(ResponseHandle.success(updateUser))
     })

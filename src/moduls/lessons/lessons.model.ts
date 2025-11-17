@@ -10,7 +10,11 @@ export interface ILesson extends Document {
     studentsId?: Types.ObjectId[]
     resources: {
         files: string[]
-        video: string
+/*        video: string*/
+        video:{
+            url: string,
+            duration:number,
+            thumbnail?: string; } // duration в секундах, thumbnail картинка для превью
         resourceLink: string[]
     }
     createdAt: Date
@@ -27,9 +31,23 @@ const lessonSchema = new Schema<ILesson>({
     resources: {
         type:
             {
-                files: [{type: [String], default: []}],
-                video: {type: String, default: "", required: false},
-                resourceLink: {type: [String],  default: [], required: false},
+                files: {type: [String], default: []},
+                video: {url: {
+                        type: String,
+                        default: "",
+                        required: false
+                    },
+                    duration: {
+                        type: Number,
+                        default: 0,
+                        required: false
+                    },
+                    thumbnail: {
+                        type: String,
+                        default: "",
+                        required: false
+                    }},
+                resourceLink: {type: [String], default: [], required: false},
             },
         default: {}
     }

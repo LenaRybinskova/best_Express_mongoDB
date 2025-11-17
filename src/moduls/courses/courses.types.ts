@@ -22,7 +22,8 @@ export const CreateCourseSchema = z.object({
         .datetime('Неверный формат даты'),
 
     price: z.number()
-        .min(1, 'Цена обязательое поле')
+        .min(1, 'Цена обязательое поле'),
+    imagePreview: z.url()
 
 })
     // в data придет весь объект
@@ -32,8 +33,8 @@ export const CreateCourseSchema = z.object({
     })
     .strict();
 
-export type CreateCourseInput = z.infer<typeof CreateCourseSchema>;
+export type CreateCourseDTO = z.infer<typeof CreateCourseSchema>;
 
 // update schema ZOD
 export const UpdateCourseSchema = CreateCourseSchema.partial().strict();
-export type UpdateCourseInput = z.infer<typeof UpdateCourseSchema>;
+export type UpdateCourseDTO = z.infer<typeof UpdateCourseSchema>;

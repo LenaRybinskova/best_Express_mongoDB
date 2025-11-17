@@ -5,7 +5,7 @@ export interface IRating {
     userId: Types.ObjectId;
     rating: number;
 }
-
+// TODO потом добавить поле чтобы считалась продолжительность всего курса исходя из суммы продожительности видео
 export interface ICourse extends Document {
     authorId: Types.ObjectId
     title: string
@@ -13,6 +13,7 @@ export interface ICourse extends Document {
     startedAt: Date
     endedAt: Date
     price: number
+    imagePreview?:string
 
     lessonsId?: Types.ObjectId[]
     commentsId?: Types.ObjectId[]
@@ -31,6 +32,7 @@ const coursesSchema = new Schema<ICourse>({
     startedAt: {type: Date, required: true},
     endedAt: {type: Date, required: true},
     price: {type: Number, required: true},
+    imagePreview:{type:String,  default:"", required: false},
     lessonsId: [{type: Schema.Types.ObjectId, ref: 'Lesson', default: []}],
     commentsId: [{type: Schema.Types.ObjectId, ref: 'Comment', default: []}],
     //Embedded
